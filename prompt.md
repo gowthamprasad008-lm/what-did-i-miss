@@ -87,7 +87,8 @@ Found while reviewing the Entry 6 screenshots: the summary card's "High priority
 - Manual testing in the v0 preview with the built-in sample chat (9 lines) and the name "Alex" after Entry 6. The summary line shown on screen read: "Analyzed 9 messages from 3 people. Alex was mentioned 2 times. Found 4 deadlines, 2 decisions..." (the rest was cut off in the screenshot).
 - Full results screenshots reviewed after Entry 6: the three intended fixes were confirmed on the sample chat (decision rated Medium, bare question not an action item, scores displayed).
 - After Entry 7: the summary card's High priority stat shows 4 on the sample chat (previously 9); the rest of the results looked unchanged in the screenshots.
-- Still not verified: 24-hour time detection, the developer's own 3-line chat test from Entry 4, and the WhatsApp export format (DD/MM/YYYY, HH:MM - Name: message).
+- WhatsApp-style test (2026-10-09): the developer pasted a 5-line WhatsApp-format export (format `DD/MM/YYYY, HH:MM - Name: message`, including one system line and one multi-line message) with the name "Alex". Screenshot reviewed by Claude. Observed: 4 messages from 3 people, time span 09:05-09:15, High priority = 1. "@Alex can you send the report by 15:00?" appeared in Mentions, Deadlines, and Action Items (High · 8); "Meeting postponed to Friday" appeared in Decisions (Medium · 3); "I'll handle the invoices" appeared in Action Items (Medium · 3). This confirms the WhatsApp line format, system-line skipping, and 24-hour time detection on this example. The screenshot cannot show whether Jordan's continuation line was merged into his message (that message is Low priority and in no section).
+- Still not verified: the developer's own 3-line chat test from Entry 4, and 24-hour time detection beyond the one example above.
 
 ---
 
