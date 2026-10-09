@@ -58,6 +58,7 @@ Chat text -> Parser -> Signal detector -> Priority scorer -> Summary builder -> 
 - **Entry 5:** Rule-based analyzer (`lib/analyze-chat.ts`) generated with v0.
 - **Entry 6:** Scoring and action-item rules adjusted in v0 after problems were found in Entry 5.
 - **Entry 7:** Summary stat bug fixed in v0 (High priority now counts unique messages).
+- **Entry 8:** App published with v0's Publish button (deployment, not a code-generation prompt).
 - Details and exact prompts are in the Interaction Log.
 
 ---
@@ -88,6 +89,7 @@ Found while reviewing the Entry 6 screenshots: the summary card's "High priority
 - Full results screenshots reviewed after Entry 6: the three intended fixes were confirmed on the sample chat (decision rated Medium, bare question not an action item, scores displayed).
 - After Entry 7: the summary card's High priority stat shows 4 on the sample chat (previously 9); the rest of the results looked unchanged in the screenshots.
 - WhatsApp-style test (2026-10-09): the developer pasted a 5-line WhatsApp-format export (format `DD/MM/YYYY, HH:MM - Name: message`, including one system line and one multi-line message) with the name "Alex". Screenshot reviewed by Claude. Observed: 4 messages from 3 people, time span 09:05-09:15, High priority = 1. "@Alex can you send the report by 15:00?" appeared in Mentions, Deadlines, and Action Items (High · 8); "Meeting postponed to Friday" appeared in Decisions (Medium · 3); "I'll handle the invoices" appeared in Action Items (Medium · 3). This confirms the WhatsApp line format, system-line skipping, and 24-hour time detection on this example. The screenshot cannot show whether Jordan's continuation line was merged into his message (that message is Low priority and in no section).
+- Deployment test (Entry 8): the developer reported that the published app worked with the device's Wi-Fi turned off after the page had loaded (sample chat, name entered, Analyze clicked, results appeared). This was reported by the developer; Claude did not see a screenshot of it.
 - Still not verified: the developer's own 3-line chat test from Entry 4, and 24-hour time detection beyond the one example above.
 
 ---
@@ -212,3 +214,12 @@ _To be completed at the end of the hackathon (AI tools used, major contributions
 - **Files/components affected:** `lib/analyze-chat.ts`.
 - **Outcome:** The summary card now shows High priority = 4. Section contents and scores looked unchanged.
 - **Verification status:** Verified by the developer on the sample chat (name "Alex") and confirmed in screenshots reviewed by Claude. Not tested on other chats yet.
+
+### Entry 8: Publish and offline check
+- **Date:** 2026-10-09
+- **AI tool/model:** v0 by Vercel (Publish button); no AI prompt was used for this step.
+- **Prompt / instruction:** None. Developer clicked Publish in v0, opened the published link, turned Wi-Fi off, then used the sample chat with a name and clicked Analyze. (Steps suggested by Claude in the planning chat.)
+- **Purpose:** Get a live link and demonstrate the local-first requirement: analysis works with no network connection.
+- **Files/components affected:** Whole app (deployment). The live URL is not recorded here yet.
+- **Outcome:** Developer reported that it "completely worked", including with Wi-Fi off.
+- **Verification status:** Reported by the developer. Claude did not see the live link or a screenshot, so this is not independently confirmed.
