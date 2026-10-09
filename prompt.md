@@ -57,6 +57,7 @@ Chat text -> Parser -> Signal detector -> Priority scorer -> Summary builder -> 
 - **Entry 4:** Real chat parser (`lib/parse-chat.ts`) generated with v0.
 - **Entry 5:** Rule-based analyzer (`lib/analyze-chat.ts`) generated with v0.
 - **Entry 6:** Scoring and action-item rules adjusted in v0 after problems were found in Entry 5.
+- **Entry 7:** Summary stat bug fixed in v0 (High priority now counts unique messages).
 - Details and exact prompts are in the Interaction Log.
 
 ---
@@ -70,6 +71,8 @@ After the first analyzer run (Entry 5), v0 itself flagged three weaknesses in it
 
 Causes 1 and 2 came from the scoring rules written in the Entry 5 prompt, not from a v0 bug. Fixed with the Entry 6 prompt. Known side effect reported by v0 after the fix: because "please" counts as a request phrase, a notice like "Launch moved to Oct 20 - please update your calendars" now appears under Decisions, Deadlines, and Action items. Not yet changed.
 
+Found while reviewing the Entry 6 screenshots: the summary card's "High priority" count shows 9, but the sample chat has 9 messages and only 4 unique High messages (the launch notice, the @Alex deck request, Jordan's client-call question, and Jordan's "We agreed..." question). The stat appears to count a message once for every section it appears in. Fixed with the Entry 7 prompt and verified on screen (the stat now shows 4).
+
 ---
 
 ## 5. AI Features & Design
@@ -82,7 +85,9 @@ Causes 1 and 2 came from the scoring rules written in the Entry 5 prompt, not fr
 ## 6. Testing & Improvements
 
 - Manual testing in the v0 preview with the built-in sample chat (9 lines) and the name "Alex" after Entry 6. The summary line shown on screen read: "Analyzed 9 messages from 3 people. Alex was mentioned 2 times. Found 4 deadlines, 2 decisions..." (the rest was cut off in the screenshot).
-- Not yet verified by screenshot: the full results sections after Entry 6, the displayed scores, "Final decision" now being at least Medium, the removal of the temporary debug view, and the developer's own 3-line chat test from Entry 4.
+- Full results screenshots reviewed after Entry 6: the three intended fixes were confirmed on the sample chat (decision rated Medium, bare question not an action item, scores displayed).
+- After Entry 7: the summary card's High priority stat shows 4 on the sample chat (previously 9); the rest of the results looked unchanged in the screenshots.
+- Still not verified: 24-hour time detection, the developer's own 3-line chat test from Entry 4, and the WhatsApp export format (DD/MM/YYYY, HH:MM - Name: message).
 
 ---
 
@@ -192,4 +197,17 @@ _To be completed at the end of the hackathon (AI tools used, major contributions
 - **Purpose:** Fix the scoring problems found in Entry 5.
 - **Files/components affected:** `lib/analyze-chat.ts` and the result tags in the UI.
 - **Outcome:** Per v0's message (visible in a screenshot): new decision words added, with "Meeting postponed to Friday" now Medium with score 3; action items require request or commitment phrases; score added to tags (screen readers hear "Priority: High, score 9"); 24-hour times now count as deadlines. v0 noted the "please" side effect described under Debugging.
-- **Verification status:** Summary line seen on screen after the change (9 messages, 3 people, Alex mentioned 2 times, 4 deadlines, 2 decisions...). Full results not yet checked by screenshot. v0's descriptions of its own changes are not independently verified.
+- **Verification status:** Developer tested with the sample chat and name "Alex"; screenshots reviewed by Claude. Confirmed on screen: "Yes, blue it is. Final decision." is now Medium · 3; "We agreed to go with the blue pricing page, right?" is no longer in Action Items (it appears under Decisions, High · 5); scores are shown on every tag; summary reads 9 messages, 3 people, Alex mentioned 2 times, 4 deadlines, 3 decisions, 4 action items. Issue found in the same review: the "High priority" stat shows 9 although only 4 unique messages are High (see Debugging). v0's descriptions of its own changes (for example 24-hour time detection) were not separately tested.
+
+### Entry 7: Fix "High priority" count
+- **Date:** 2026-10-09
+- **AI tool/model:** v0 by Vercel
+- **Prompt / instruction (exact):**
+  ```
+  In lib/analyze-chat.ts, fix the summary stats: "High priority" must count unique messages with priority High, not items across sections. A message that appears in several sections is counted once. Don't change any scoring rules or the sections themselves.
+  ```
+  (Prompt drafted with Claude's help, then run in v0 as written.)
+- **Purpose:** Fix a misleading statistic found while reviewing Entry 6 screenshots (the card showed 9 High-priority items for a 9-message chat).
+- **Files/components affected:** `lib/analyze-chat.ts`.
+- **Outcome:** The summary card now shows High priority = 4. Section contents and scores looked unchanged.
+- **Verification status:** Verified by the developer on the sample chat (name "Alex") and confirmed in screenshots reviewed by Claude. Not tested on other chats yet.
