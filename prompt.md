@@ -27,13 +27,14 @@ Last updated: 2026-10-09 (before any application code was written)
 
 ## 2. Tech Stack & Architecture
 
-**Planned stack (not yet built):**
-- UI: React + Tailwind (initial UI generation planned with v0)
-- Code generation/editing: Antigravity (planned), Claude (planning and assistance)
-- Hosting: Vercel, static site with no backend
-- Storage: browser only, no database, no server
+**Stack as actually used:**
+- UI and all application code: generated with v0 by Vercel (the prompt requested React + Tailwind; v0 produced TypeScript modules under `lib/`, such as `parse-chat.ts`, `analyze-chat.ts`, and `sample-chat.ts`). Framework details were not independently checked.
+- Planning, prompt drafting, and this log: Claude (claude.ai chat).
+- Antigravity was in the original plan but was **not used**.
+- Hosting: published with v0's Publish button; no backend.
+- Storage: none. Everything runs in the browser; no database, no server, no Supabase.
 
-**Planned architecture (all in the browser):**
+**Architecture (all in the browser):**
 
 ```
 Chat text -> Parser -> Signal detector -> Priority scorer -> Summary builder -> Results UI
@@ -96,7 +97,28 @@ Found while reviewing the Entry 6 screenshots: the summary card's "High priority
 
 ## 7. Final Summary
 
-_To be completed at the end of the hackathon (AI tools used, major contributions, completed features)._
+_Status as of 2026-10-09, written from the entries above. Update if anything changes._
+
+**AI tools used:**
+- v0 by Vercel: generated the UI, the chat parser, the rule-based analyzer, the fixes, and the published deployment.
+- Claude (claude.ai chat): planning, scoping to a 2-hour solo build, drafting the v0 prompts, reviewing screenshots of results, and keeping this log.
+- Antigravity: planned, not used.
+
+**Major contributions:**
+- AI-generated UI with a "100% local" indicator and four result sections with color-coded priority tags.
+- AI-generated parser for `[HH:MM] Name: message` and WhatsApp-export lines.
+- AI-generated rule-based analyzer (no AI model inside the app): mentions, deadlines, decisions, action items, an explainable priority score, and a template summary.
+- Human-led testing found and fixed three scoring weaknesses and one misleading statistic (Debugging, Entries 5-7).
+
+**Completed features (verified by the developer's testing as described in section 6):**
+- Paste a chat and get a summary plus four sections with priority and score
+- Sample-chat and WhatsApp-format tests passed
+- Published app reported working with Wi-Fi off (developer-reported)
+
+**Known limits (not hidden):**
+- Rule-based keyword matching, so unusual phrasing can be missed or over-matched (for example, one launch notice appears in three sections).
+- Two chat line formats supported; other export formats are untested.
+- Developer's own 3-line chat test and some 24-hour time cases were not separately verified.
 
 ---
 
@@ -223,3 +245,12 @@ _To be completed at the end of the hackathon (AI tools used, major contributions
 - **Files/components affected:** Whole app (deployment). The live URL is not recorded here yet.
 - **Outcome:** Developer reported that it "completely worked", including with Wi-Fi off.
 - **Verification status:** Reported by the developer. Claude did not see the live link or a screenshot, so this is not independently confirmed.
+
+### Entry 9: Code pushed to GitHub
+- **Date:** 2026-10-09
+- **AI tool/model:** v0 by Vercel (GitHub connection); no AI prompt was used for this step.
+- **Prompt / instruction:** None. Developer connected v0 to GitHub and pushed the project code to the repository, following Claude's suggested steps.
+- **Purpose:** Put the application code and `prompt.md` together in the repository for submission.
+- **Files/components affected:** Repository contents.
+- **Outcome:** Developer reported the step as done.
+- **Verification status:** Reported by the developer only. Claude has not seen the repository or a screenshot, so what was pushed, and to which branch, is not confirmed here.
